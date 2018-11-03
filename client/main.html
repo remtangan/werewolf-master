@@ -3,11 +3,11 @@
   <title>Werewolf</title>
 
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
-  <link rel="stylesheet"  type="text/css" href="bootstrap.min.css" />
+  <link rel="stylesheet" type="text/css" href="bootstrap.min.css" />
   <script href="bootstrap.min.js" type="text/javascript"></script>
 </head>
 
-<body></body>
+<body style="background-image: url('/assets/bg-main.png'); background-repeat: no-repeat; background-size: cover;"></body>
 
 <template name="main">
   <div class="container-fluid">
@@ -22,26 +22,27 @@
 </template>
 
 <template name="startMenu">
-  <h3>One Night Ultimate Werewolf</h3>
-
-  <button type="button" id="btn-create-game-view" class="btn btn-secondary btn-lg">New Game</button>
+  <img src='/assets/title.png' style="width: 100%; padding-top: 80px; padding-bottom: 50px;">
+  <button type="button" id="btn-create-game-view" class="btn btn-secondary btn-lg">Create Game</button>
+  <span style="padding-right: 30px"></span>
   <button type="button" id="btn-join-game-view" class="btn btn-secondary btn-lg">Join Game</button>
 </template>
 
 <template name="createGame">
-  <h3>Create Game</h3>
+  <img src='/assets/title.png' style="width: 100%; padding-top: 80px; padding-bottom: 50px;">
   <form id="create-game">
     <div class="form-group">
       <!-- <label for="text">Name</label> -->
       <input type="text" class="form-control" id="player-name" name="playerName" placeholder='Enter your name'>
     </div>
     <input type="submit" class="btn btn-primary btn-lg" value='Create'>
+    <span style="padding-right: 30px"></span>
     <button class="btn btn-secondary btn-lg btn-back-start-menu">Back</button>
   </form>
 </template>
 
 <template name="joinGame">
-  <h3>Join Game</h3>
+  <img src='/assets/title.png' style="width: 100%; padding-top: 80px; padding-bottom: 50px;">
 
   {{#if errorMessage}}
     <h5>{{ errorMessage }}</h5>
@@ -55,6 +56,7 @@
       <input type="text" class="form-control" id="access-code" name="accessCode" placeholder='Enter an access code' autocorrect="off" autocapitalize="off">
     </div>
     <input type="submit" class="btn btn-primary btn-lg" value='Join'>
+    <span style="padding-right: 30px"></span>
     <button class="btn btn-secondary btn-lg btn-back-start-menu">Back</button>
   </form>
 </template>
@@ -71,11 +73,12 @@
   </ol>
 
   <button class="btn btn-primary btn-lg btn-start">Start Game</button>
+  <span style="padding-right: 30px"></span>
   <button class="btn btn-secondary btn-lg btn-leave">Leave Game</button>
 </template>
 
 <template name="rolesMenu">
-  <h3>Choose which roles</h3>
+  <h3>Choose Roles:</h3>
 
   {{#if errorMessage}}
     <h5>{{ errorMessage }}</h5>
@@ -88,24 +91,28 @@
           <label class="role-checkbox">
             <input type="checkbox" name="{{ key }}" value="{{ key }}" class="toggle-role"
             onclick="$(this).parent().parent().toggleClass('selected-role')"/>
-            {{ name }}<br>
+            <img src="/assets/cards/{{ name }}.png" style="width:100%; padding-left: 10px;">
           </label>
         </div>
       {{/each}}
     </div>
+    <button class="btn btn-secondary btn-md btn-end">End Game</button>
+    <span style="padding-right: 15px"></span>
     <input type="submit" class="btn btn-primary btn-lg" value='Start' />
+    <span style="padding-right: 15px"></span>
+    <button class="btn btn-secondary btn-md btn-leave">Leave Game</button>
   </form>
 
   <br />
-  <button class="btn btn-secondary btn-md btn-end">End Game</button>
-  <button class="btn btn-secondary btn-md btn-leave">Leave Game</button>
+
+
 </template>
 
 <template name="nightView">
   <h3>Night View for {{ player.name }}</h3>
 
   <p>
-    You are the {{ player.role.name }}.
+     <img src="/assets/cards/{{ player.role.name }}.png" style="width:20%;">
   </p>
 
   {{#if stillNight game turnIndex}}
@@ -126,8 +133,8 @@
   <h5>Center Cards</h5>
   <div class="center-cards">
     {{#each game.centerCards}}
-      <button class="btn btn-secondary center-cards" id="card-{{@index}}">
-        Card {{@index}}
+      <button class="btn btn-secondary center-cards" style="width:20%" id="card-{{@index}}">
+        <img src="/assets/cards/Blank.png" style="width: 100%; border-radius: 3px;">
       </button>
     {{/each}}
   </div>
@@ -179,13 +186,11 @@
     <h4><a id="countdown">{{{ timeRemaining }}}</a></h4>
   {{/if}}
 
-
-
   <h5>Center Cards</h5>
   <div class="center-cards">
     {{#each game.centerCards}}
-      <button class="btn btn-secondary">
-        Card {{@index}}
+      <button class="btn btn-secondary center-cards" style="width:20%" id="card-{{@index}}">
+        <img src="/assets/cards/Blank.png" style="width: 100%; border-radius: 3px;">
       </button>
     {{/each}}
   </div>

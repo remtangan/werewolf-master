@@ -14,7 +14,7 @@ allRoles = {
   },
   minion : {
     name: 'Minion',
-    order: 4
+    order: 4  
   },
   mason1 : {
     name: 'Mason',

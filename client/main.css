@@ -16,14 +16,15 @@
 
 h3 {
   font-family: 'Griffy', cursive;
+  color: white;
 }
 
 /*font-family: 'Griffy', cursive;*/
 
 body {
   text-align: center;
-  margin: 15% auto 0 auto;
-  max-width: 500px;
+  margin: 5% auto 0 auto;
+  max-width: 600px;
   box-sizing: border-box;
 }
 
@@ -44,13 +45,13 @@ li {
 }
 
 #choose-roles-form {
-  margin-left: 10%;
-  margin-right: 10%;
+  margin-left: 5%;
+  margin-right: 5%;
 }
 
 #choose-roles-list {
-  column-count: 2;
-  column-gap: 4px;
+  column-count: 4;
+  column-gap: 6px;
   margin-bottom: 15px;
 }
 
@@ -77,6 +78,11 @@ li {
 #choose-roles-list .selected-role:hover {
   background-color: lightgreen;
 }
+
+p,h5{
+  color:white;
+}
+
 
 .role-checkbox {
   width: 100%;
