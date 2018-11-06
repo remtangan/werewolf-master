@@ -1,4 +1,5 @@
 import '../imports/roles.js';
+import './bootstrap.bundle';
 
 function generateAccessCode() {
   var code = '';
@@ -767,3 +768,67 @@ Template.dayView.events({
     }
   }
 });
+
+
+
+//CHAT CODE
+Messages = new Mongo.Collection("msgs");
+
+Meteor.methods({
+    sendMessage: function (messageText, accessCode, playerName) {
+    Messages.insert({
+      messageText: messageText,
+      username: playerName,
+      createdAt: new Date(),
+      accessCode: accessCode
+    });
+  }
+});
+
+var autoScrollingIsActive = true;
+scrollToBottom = function scrollToBottom (duration) {
+  var messageWindow = $(".panel-body");
+  var scrollHeight = messageWindow.prop("scrollHeight");
+  messageWindow.stop().animate({scrollTop: scrollHeight}, duration || 0);
+};
+
+if (Meteor.isClient) {
+  Meteor.subscribe("messages", {
+    onReady: function () { scrollToBottom(250); console.log("Server ready to published"); },
+    onError: function () { console.log("onError", arguments); }
+  });
+
+  Handlebars.registerHelper('recentMessages', function(){
+    return Messages.find({accessCode: getCurrentGame().accessCode}, {sort: {createdAt: 1}}).fetch();
+  });
+
+  Template.message.onRendered(function () {
+    
+  });
+
+  Template.body.events({
+    "scroll .panel-body": function () {
+      var howClose = 80;
+      var messageWindow = $(".panel-body");
+      var scrollHeight = messageWindow.prop("scrollHeight");
+      var scrollBottom = messageWindow.prop("scrollTop") + messageWindow.height();
+      var atBottom = scrollBottom > (scrollHeight - howClose);
+      autoScrollingIsActive = atBottom ? true : false;
+    }
+  });
+  
+  Template.chatbox.events({   
+    "keyup #new-message": function (event) {
+      if(event.keyCode == 13){
+        var text = $(event.currentTarget).val();
+        Meteor.call("sendMessage", text, getCurrentGame().accessCode, getCurrentPlayer().name);
+        scrollToBottom(250);
+        $(event.currentTarget).val('');
+        // console.log(getCurrentGame().accessCode);
+        // console.log(getCurrentPlayer().name);
+        console.log(Messages.find({}, {sort: {createdAt: 1}}).fetch());
+      }
+    }
+  })
+}
+

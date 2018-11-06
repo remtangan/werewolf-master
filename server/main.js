@@ -146,3 +146,21 @@ Games.find({'state': 'finishedVoting'}).observeChanges({
     }
   }
 })
+
+//CHAT CODE
+Messages = new Mongo.Collection("msgs");
+
+Meteor.publish("messages", function () {
+  return Messages.find({}, {sort: {createdAt: -1}, limit: 30});
+});
+
+Meteor.methods({
+  sendMessage: function (messageText, accessCode, playerName) {
+    Messages.insert({
+      messageText: messageText,
+      username: playerName,
+      createdAt: new Date(),
+      accessCode: accessCode
+    });
+  }
+});
