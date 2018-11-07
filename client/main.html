@@ -79,6 +79,7 @@
 </template>
 
 <template name="rolesMenu">
+  {{> chatbox}}
   <h3>Choose Roles:</h3>
 
   {{#if errorMessage}}
@@ -110,6 +111,7 @@
 </template>
 
 <template name="nightView">
+  {{> chatbox}}
   <h3>Night View for {{ player.name }}</h3>
 
   <p>
@@ -159,6 +161,7 @@
 </template>
 
 <template name="dayView">
+{{> chatbox}}
   <h3>Day View for {{ player.name }}</h3>
 
   {{#if equals game.state 'voting'}}
