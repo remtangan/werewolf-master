@@ -740,6 +740,48 @@ Handlebars.registerHelper('noDeaths', function(game) {
   return game.killed.length == 0;
 })
 
+Template.startMenu.onRendered(function(){
+    $('body').removeClass('newbBackground');
+    $('body').removeClass('nightBackground');
+    $('body').addClass('background');
+})
+
+Template.createGame.onRendered(function(){
+    $('body').removeClass('newbBackground');
+    $('body').removeClass('nightBackground');
+    $('body').addClass('background');
+})
+
+Template.joinGame.onRendered(function(){
+    $('body').removeClass('newbBackground');
+    $('body').removeClass('nightBackground');
+    $('body').addClass('background');
+})
+
+Template.lobby.onRendered(function(){
+    $('body').removeClass('newbBackground');
+    $('body').removeClass('nightBackground');
+    $('body').addClass('background');
+})
+
+Template.rolesMenu.onRendered(function(){
+    $('body').removeClass('newbBackground');
+    $('body').removeClass('nightBackground');
+    $('body').addClass('background');
+})
+
+Template.nightView.onRendered(function(){
+    $('body').removeClass('background');
+    $('body').removeClass('newBackground');
+    $('body').addClass('nightBackground');
+})
+
+Template.dayView.onRendered(function(){  
+    $('body').removeClass('backBackground');
+    $('body').removeClass('nightBackground');
+    $('body').addClass('newBackground');
+})
+
 Template.dayView.events({
   'click #countdown': function () {
     var game = getCurrentGame();
@@ -757,6 +799,8 @@ Template.dayView.events({
     var player = getCurrentPlayer();
 
     Players.update(player._id, {$set: {vote: event.currentTarget.id}});
+    var cssId = '#' + event.currentTarget.id;
+    $(cssId).addClass('selected-card');
     return false;
   },
   'click .btn-leave': leaveGame,

@@ -7,7 +7,7 @@
   <script href="bootstrap.min.js" type="text/javascript"></script>
 </head>
 
-<body style="background-image: url('/assets/bg-main.png'); background-repeat: no-repeat; background-size: cover;"></body>
+<body class="background"></body>
 
 <template name="main">
   <div class="container-fluid">
@@ -23,9 +23,9 @@
 
 <template name="startMenu">
   <img src='/assets/title.png' style="width: 100%; padding-top: 80px; padding-bottom: 50px;">
-  <button type="button" id="btn-create-game-view" class="btn btn-secondary btn-lg">Create Game</button>
+  <button type="button" id="btn-create-game-view" class="btn btn-secondary btn-lg btn-yellow">Create Game</button>
   <span style="padding-right: 30px"></span>
-  <button type="button" id="btn-join-game-view" class="btn btn-secondary btn-lg">Join Game</button>
+  <button type="button" id="btn-join-game-view" class="btn btn-secondary btn-lg btn-yellow">Join Game</button>
 </template>
 
 <template name="createGame">
@@ -35,9 +35,9 @@
       <!-- <label for="text">Name</label> -->
       <input type="text" class="form-control" id="player-name" name="playerName" placeholder='Enter your name'>
     </div>
-    <input type="submit" class="btn btn-primary btn-lg" value='Create'>
+    <input type="submit" class="btn btn-secondary btn-lg btn-yellow" value='Create'>
     <span style="padding-right: 30px"></span>
-    <button class="btn btn-secondary btn-lg btn-back-start-menu">Back</button>
+    <button class="btn btn-secondary btn-lg btn-red btn-back-start-menu">Back</button>
   </form>
 </template>
 
@@ -55,15 +55,15 @@
     <div class="form-group">
       <input type="text" class="form-control" id="access-code" name="accessCode" placeholder='Enter an access code' autocorrect="off" autocapitalize="off">
     </div>
-    <input type="submit" class="btn btn-primary btn-lg" value='Join'>
+    <input type="submit" class="btn btn-secondary btn-lg btn-yellow" value='Join'>
     <span style="padding-right: 30px"></span>
-    <button class="btn btn-secondary btn-lg btn-back-start-menu">Back</button>
+    <button class="btn btn-secondary btn-lg btn-red btn-back-start-menu">Back</button>
   </form>
 </template>
 
 <template name="lobby">
   {{> chatbox}}
-  <h3>Waiting for players</h3>
+  <h3>Current Players</h3>
   <h4>Access Code: {{game.accessCode}}</h4>
   <ol id="lobby-player-list">
     {{#each players}}
@@ -72,22 +72,24 @@
     </li>
     {{/each}}
   </ol>
-
-  <button class="btn btn-primary btn-lg btn-start">Start Game</button>
-  <span style="padding-right: 30px"></span>
-  <button class="btn btn-secondary btn-lg btn-leave">Leave Game</button>
+  <div style="bottom: 10px;">
+    <button class="btn btn-secondary btn-lg btn-yellow btn-start">Start Game</button>
+    <span style="padding-right: 30px"></span>
+    <button class="btn btn-secondary btn-lg btn-red btn-leave">Leave Game</button>
+  </div>
 </template>
 
 <template name="rolesMenu">
   {{> chatbox}}
-  <h3>Choose Roles:</h3>
+  <h3>Roles Selection</h3>
 
   {{#if errorMessage}}
     <h5>{{ errorMessage }}</h5>
   {{/if}}
 
   <form id="choose-roles-form">
-    <div id="choose-roles-list">
+    <div id="choose-roles-list" style="
+    overflow-x: scroll; height: 395px; border-width: 1px; border-style: dashed; border-color: white">
       {{#each roleKeys}}
         <div class="checkbox">
           <label class="role-checkbox">
@@ -98,82 +100,109 @@
         </div>
       {{/each}}
     </div>
-    <button class="btn btn-secondary btn-md btn-end">End Game</button>
-    <span style="padding-right: 15px"></span>
-    <input type="submit" class="btn btn-primary btn-lg" value='Start' />
-    <span style="padding-right: 15px"></span>
-    <button class="btn btn-secondary btn-md btn-leave">Leave Game</button>
+
+    <input type="submit" class="btn btn-secondary btn-lg btn-yellow" value='Start Game'/>
+    <br>
+    <button class="btn btn-secondary btn-lg btn-end btn-red">End Game</button>
+    <span style="padding-right: 30px"></span>
+    <button class="btn btn-secondary btn-lg btn-red btn-leave">Leave Game</button>
   </form>
-
-  <br />
-
-
 </template>
 
 <template name="nightView">
   {{> chatbox}}
-  <h3>Night View for {{ player.name }}</h3>
+  <div class="panel-secondary panel" style="right:0px; top:0px; height: 70%">
+    <div>
+      <div class="panel-body dropup">
+        <ul class="chat">
+          <p>
+           <img src="/assets/cards/{{ player.role.name }}.png" style="width:50%;">
+          </p>
+        </ul>
+        <ul class="chat">
+          -------------------------
+        </ul>
+        <ul class="chat">
+          <h4>Instruction</h4>
+          {{#if stillNight game turnIndex}}
+            {{#if equals activeRole.name player.role.name }}
+              <p>
+                {{instructions game players player}}
+              </p>
+              {{#if turnMessage}}
+                <p>
+                  {{turnMessage}}
+                </p>
+              {{/if}}
+            {{else}}
+              It is not your turn.
+            {{/if}}
+          {{/if}}
+        </ul>
+      </div>
+    </div>
+  </div>       
 
-  <p>
-     <img src="/assets/cards/{{ player.role.name }}.png" style="width:20%;">
-  </p>
+  <div class="panel-secondary panel" style="right:0px; bottom: 0px; height: 30%">
+    <div>
+      <div class="panel-body dropup">
+        <ul class="chat">
+          <h4>Players</h4>
+          <div class="ingame-player-list">
+            {{#each players}}
+              <button class="btn btn-secondary player-cards btn-dark btn-yellow-trans"  id="{{ _id }}">
+                {{ name }} <br />
+              </button>
+            {{/each}}
+          </div>
+        </ul>
+      </div>
+    </div>
+  </div>
 
-  {{#if stillNight game turnIndex}}
-    {{#if equals activeRole.name player.role.name }}
-      <p>
-        {{instructions game players player}}
-      </p>
-      {{#if turnMessage}}
-        <p>
-          {{turnMessage}}
-        </p>
-      {{/if}}
-    {{else}}
-      It is not your turn.
-    {{/if}}
-  {{/if}}
+  <h3>It's Night Time, {{ player.name }}</h3>
 
-  <h5>Center Cards</h5>
+  <br>
+  <br>
+  <br>
+
+  <h4>Center Cards</h4>
   <div class="center-cards">
     {{#each game.centerCards}}
-      <button class="btn btn-secondary center-cards" style="width:20%" id="card-{{@index}}">
+      <button class="btn btn-secondary btn-yellow center-cards" style="width:20%" id="card-{{@index}}">
         <img src="/assets/cards/Blank.png" style="width: 100%; border-radius: 3px;">
       </button>
     {{/each}}
   </div>
 
-  <h5>Players</h5>
-  <div class="ingame-player-list">
-    {{#each players}}
-    <button class="btn btn-secondary player-cards" id="{{ _id }}">
-      {{ name }} <br />
-    </button>
-    {{/each}}
-  </div>
+  <br>
+  <br>
+  <br>
 
-  <button class="btn btn-primary btn-lg" id="btn-end-turn">End Turn</button>
-  <br />
-  <br />
-
-  <button class="btn btn-secondary btn-md btn-end">End Game</button>
-  <button class="btn btn-secondary btn-md btn-leave">Leave Game</button>
+  <button class="btn btn-secondary btn-lg btn-yellow" id="btn-end-turn">End Turn</button>
+  <br>
+   <button class="btn btn-secondary btn-lg btn-end btn-red">End Game</button>
+      <span style="padding-right: 30px"></span>
+  <button class="btn btn-secondary btn-lg btn-leave btn-red">Leave Game</button>
 
 </template>
 
 <template name="dayView">
 {{> chatbox}}
-  <h3>Day View for {{ player.name }}</h3>
-
-  {{#if equals game.state 'voting'}}
-  <p>
-    Vote for one player to kill.
-  </p>
-  {{/if}}
-
+  <div class="panel-secondary panel" style="right:0px; top:0px; height: 70%">
+    <div>
+      <div class="panel-body dropup">
+        <ul class="chat">
+          <p>
+           <img src="/assets/cards/{{ player.role.name }}.png" style="width:50%;">
+          </p>
+        </ul>
+        <ul class="chat">
+          -------------------------
+        </ul>
+        <ul class="chat">
   {{#if equals game.state 'finishedVoting'}}
-    <h4>{{ winningTeam }}</h4>
-    <h4>You ended up as the {{ player.role.name }}.</h4>
-    <h5>Voting results</h5>
+    <h4>Voting Result</h4>
     {{#if noDeaths game}}
     <p>No one died.</p>
     {{else}}
@@ -186,49 +215,105 @@
         {{/each}}
       </ol>
     {{/if}}
-  {{else}}
-    <h4><a id="countdown">{{{ timeRemaining }}}</a></h4>
+    {{else}}
+      <h4>Countdown</h4>
+      <h4><a id="countdown" style="color:white">{{{ timeRemaining }}}</a></h4>
   {{/if}}
+        </ul>
+      </div>
+    </div>
+  </div>       
 
-  <h5>Center Cards</h5>
-  <div class="center-cards">
-    {{#each game.centerCards}}
-      <button class="btn btn-secondary center-cards" style="width:20%" id="card-{{@index}}">
-        <img src="/assets/cards/Blank.png" style="width: 100%; border-radius: 3px;">
-      </button>
-    {{/each}}
+  <div class="panel-secondary panel" style="right:0px; bottom: 0px; height: 30%">
+    <div>
+      <div class="panel-body dropup">
+        <ul class="chat">
+          <h4>Players</h4>
+          <div class="ingame-player-list">
+            {{#each players}}
+              <button class="btn btn-secondary player-cards btn-dark btn-yellow-trans">
+                {{ name }} <br />
+              </button>
+            {{/each}}
+          </div>
+        </ul>
+      </div>
+    </div>
   </div>
 
-  <h5>Players</h5>
-  <div class="ingame-player-list">
-    {{#each players}}
-      <button class="btn btn-secondary vote-player" id = {{ _id }}>
-        {{ name }} <br />
-      </button>
-      {{#if equals game.state 'finishedVoting'}}
-      (Role: {{ role.name }})
-      {{/if}}
-    {{/each}}
-  </div>
 
-  <button class="btn btn-secondary btn-md btn-vote-now">Vote Now</button>
-  <button class="btn btn-secondary btn-md btn-end">End Game</button>
-  <button class="btn btn-secondary btn-md btn-leave">Leave Game</button>
+  {{#if equals game.state 'voting'}}
+       <h4>
+      Vote for one player to kill.
+    </h4>
+    <br>
+    <br>
+    <br>
+     <h4>Players</h4>
+            <div class="ingame-player-list">
+              {{#each players}}
+                <button class="btn btn-secondary vote-player btn-dark" id="{{ _id }}">
+                  {{name}}
+                </button>
+              {{/each}}
+            </div>
+  {{else}}
+    {{#if equals game.state 'finishedVoting'}}
+            <h4>{{ winningTeam }}</h4>
+            <h4>You ended up as the {{ player.role.name }}.</h4>
+              <br>
+          <br>
+          <br>
+            <h4>Roles</h4>
+                  <div class="ingame-player-list">
+                    {{#each players}}
+                      <button class="btn btn-secondary player-cards btn-dark" id="{{ _id }}">
+                        {{ name }} <br />
+                         {{#if equals game.state 'finishedVoting'}}
+                        (Role: {{ role.name }})
+                        {{/if}}
+                      </button>
+                    {{/each}}
+                  </div>
+                  <br>
+                  <br>
+                  <br>
+        <button class="btn btn-secondary btn-lg btn-end btn-red">End Game</button>
+          <span style="padding-right: 30px"></span>
+        <button class="btn btn-secondary btn-lg btn-leave btn-red">Leave Game</button>
+    {{else}}
+       <h3>It's Day Time, {{ player.name }}</h3>
+        <br>
+        <br>
+        <br>
+        <h4>Center Cards</h4>
+        <div class="center-cards">
+          {{#each game.centerCards}}
+            <button class="btn btn-secondary center-cards btn-yellow" style="width:20%" id="card-{{@index}}">
+              <img src="/assets/cards/Blank.png" style="width: 100%; border-radius: 3px;">
+            </button>
+          {{/each}}
+        </div>
+        <br>
+        <br>
+        <br>
+        <button class="btn btn-secondary btn-lg btn-vote-now btn-yellow">Vote Now</button>
+        <br>
+        <button class="btn btn-secondary btn-lg btn-end btn-red">End Game</button>
+          <span style="padding-right: 30px"></span>
+        <button class="btn btn-secondary btn-lg btn-leave btn-red">Leave Game</button>
+    {{/if}}
+  {{/if}}
 
 </template>
 
 <template name="chatbox">
-  <div class="panel panel-primary">
-      <div class="panel-heading" id="accordion">
-          <span class="glyphicon glyphicon-comment"></span> Chat
-          <div class="btn-group pull-right">
-              <a type="button" class="btn btn-default btn-xs" id="btnToggle" data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
-                  <span class="glyphicon glyphicon-chevron-down"></span>
-              </a>
-          </div>
-      </div>
-      <div class="panel-collapse collapse" id="collapseOne">
-          <div class="panel-body dropdup">
+  <div class="panel panel-secondary" style="top: 0px; bottom: 0px; left: 0px;">
+      <div>
+          <div class="panel-body dropup">
+              <ul class="chat">
+                <h4>Welcome to the chat room!</h4>
+              </ul>
               <ul class="chat">
                   {{#each recentMessages}}
                     {{> message}}
@@ -247,9 +332,9 @@
   <li class="left clearfix message">
       <div class="chat-body clearfix">
           <div class="header">
-              <strong class="primary-font">{{username}}</strong>
+              <p style="color: rgba(251,236,93,1);">{{username}}</p>
           </div>
-          <p>
+          <p style="overflow-wrap: break-word;color: white">
               {{messageText}}
           </p>
       </div>
