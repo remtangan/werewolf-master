@@ -26,6 +26,38 @@
   <button type="button" id="btn-create-game-view" class="btn btn-secondary btn-lg">Create Game</button>
   <span style="padding-right: 30px"></span>
   <button type="button" id="btn-join-game-view" class="btn btn-secondary btn-lg">Join Game</button>
+  <span style="padding-right: 30px"></span>
+  <button type="button" id="btn-how-to-play-view" class="btn btn-secondary btn-lg">How To Play</button>
+</template>
+
+<template name="howToPlay">
+  <h2>How To Play</h2>
+
+  <ol>
+    <li>Lihat role anda</li>
+    <li>Pilih role sebanyak +3 dari total pemain</li>
+    <li>3 role akan menjadi card center yang tidak dapat dilihat rolenya kecuali Seer </li>
+    <li>Anda diberi waktu untuk memikirkan siapa werewolf</li>
+    <li>Bila waktunya habis maka anda harus melakukan vote siapa yang menjadi werewolf</li>
+    <li>Bila werewolf berhasil selamat dari vote, maka werewolf menang</li>
+  </ol> 
+
+  <h2>List Role</h2>
+
+  <ol>
+    <li>Werewolf [+2] - Pada night time, werewolf akan bangun dan mengenali teman werewolfnya</li>
+    <li>Minion [+1] - Pada night time akan bangun dan mengenali para werewolf, namun werewolf tidak mengenalnya. Minion akan bergerak sebagai 'Decoy' agar Werewolves selamat di siang hari. Jika Minion divoting  dan ke 2 werewolves selamat , dia tetap menang bersama werewolf</li>
+    <li>Mason [+2] - Pada night time, mason akan bangun dan mengenali mason lainnya</li>
+    <li>Seer [+1] - Pada night time, akan bangun dan boleh melakukan salah satu dari 2 aksi ini : Melihat kartu seorang pemain, Melihat 2 kartu yang ada di tengah meja</li>
+    <li>Robber [+1] - Pada night time, Robber dapat menukar kartu miliknya dengan seorang pemain, dan kemudian melihat kartu tersebut</li>
+    <li>Pada night time, Drunk dapat menukarkan kartu miliknya dengan sebuah kartu yang ada di tengah meja, tanpa melihat kartu tersebut</li>
+    <li>Troublemaker [+1] - Pada night time, Troublemaker menukarkan kartu 2 pemain tanpa melihatnya. Troublemaker tidak dapat menukarkan kartu miliknya</li>
+    <li>Insomniac [+1] - Pada night time, Insomniac bangun dan akan melihat kartunya sendiri untuk memeriksa apakah dia masih menjadi insomniac atau berubah menjadi peran yang lain</li>
+    <li>Hunter[+1] - Hunter tetap tertidur pada saat night time. Hunter adalah Special Role. Jika Hunter di vote, dia masih memiliki sebuah peluru untuk menembak orang yang dia vote di saat-saat terakhir</li>
+    <li>Tanner [+1] - Tanner tetap tertidur pada saat night time. Tanner adalah Special Role. Tanner menang jika dia mati</li>
+  </ol> 
+
+  <button type="button" id="btn-start-menu-view" class="btn btn-secondary btn-lg">How To Play</button>
 </template>
 
 <template name="createGame">

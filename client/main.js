@@ -213,6 +213,9 @@ Template.startMenu.events({
   },
   'click #btn-join-game-view': function() {
     Session.set('currentView', 'joinGame');
+  },
+  'click #btn-how-to-play-view': function() {
+    Session.set('currentView', 'howToPlay');
   }
 });
 
@@ -221,6 +224,12 @@ Template.startMenu.rendered = function() {
 };
 
 Session.set('currentView', 'startMenu');
+
+Template.howToPlay.events({
+  'click #btn-start-menu-view': function() {
+    Session.set('currentView', 'startMenu');
+  }
+});
 
 Template.createGame.events({
   'submit #create-game': function(event) {
