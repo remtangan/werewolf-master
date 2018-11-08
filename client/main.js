@@ -350,10 +350,14 @@ Template.lobby.helpers({
 Template.lobby.events({
   'click .btn-leave': leaveGame,
   'click .btn-start': function() {
-    Session.set('currentView', 'rolesMenu');
-
     var game = getCurrentGame();
-    Games.update(game._id, {$set: {state: 'selectingRoles'}});
+    var players = Players.find({'gameID': game._id}, {'sort': {'createdAt': 1}}).count();
+
+    if(players >= 2) {
+      Session.set('currentView', 'rolesMenu');
+      var game = getCurrentGame();
+      Games.update(game._id, {$set: {state: 'selectingRoles'}});
+    }
   }
 })
 
